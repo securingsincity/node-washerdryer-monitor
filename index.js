@@ -5,8 +5,8 @@ var app = express()
 let lastVibrationChange = 0;
 let wasVibrating = false;
 let startTime = 0;
-const key = process.env['MAKER_KEY']
-const eventName = process.env['MAKER_EVENT_NAME']
+const key = process.env['MAKER_KEY'] || ''
+const eventName = process.env['MAKER_EVENT_NAME'] || 'dryer'
 const pin = process.env['PIN']
 
 const isVibrating = () => {
@@ -25,9 +25,8 @@ rpio.poll(pin, (pin) => {
 
 setInterval(() => {
   const isVibratingNow = isVibrating()
-  console.log(`timer going off: isVibrating: ${isVibratingNow}, wasVibrating: ${wasVibrating}`)
   if (wasVibrating && !isVibratingNow) {
-    console.log('ive stopped' + new Date())
+    console.log(`The ${key} has stopped ${new Date().toLocaleDateString()}`)
     const stopTime = new Date().getTime()
       axios.post(`https://maker.ifttt.com/trigger/${eventName}/with/key/${key}`, {
         value1: 'stopped',
@@ -42,7 +41,7 @@ setInterval(() => {
       wasVibrating = false
 
   } else if (!wasVibrating && isVibratingNow) {
-    console.log('ive started' + new Date())
+    console.log(`The ${key} has started ${new Date().toLocaleDateString()}`)
     startTime = new Date().getTime()
       axios.post(`https://maker.ifttt.com/trigger/${eventName}/with/key/${key}`, {
         value1: 'started',
