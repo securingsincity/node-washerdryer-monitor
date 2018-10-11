@@ -7,7 +7,7 @@ let wasVibrating = false;
 let startTime = 0;
 const key = process.env['MAKER_KEY'] || ''
 const eventName = process.env['MAKER_EVENT_NAME'] || 'dryer'
-const pin = process.env['PIN']
+const pin = Number(process.env['PIN'])
 
 const isVibrating = () => {
   const currentTime = new Date().getTime()
