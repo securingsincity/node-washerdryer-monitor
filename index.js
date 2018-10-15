@@ -26,7 +26,7 @@ rpio.poll(pin, (pin) => {
 setInterval(() => {
   const isVibratingNow = isVibrating()
   if (wasVibrating && !isVibratingNow) {
-    console.log(`The ${key} has stopped ${new Date().toLocaleDateString()}`)
+    console.log(`The ${eventName} has stopped ${new Date().toLocaleDateString()}`)
     const stopTime = new Date().getTime()
       axios.post(`https://maker.ifttt.com/trigger/${eventName}/with/key/${key}`, {
         value1: 'stopped',
@@ -41,7 +41,7 @@ setInterval(() => {
       wasVibrating = false
 
   } else if (!wasVibrating && isVibratingNow) {
-    console.log(`The ${key} has started ${new Date().toLocaleDateString()}`)
+    console.log(`The ${eventName} has started ${new Date().toLocaleDateString()}`)
     startTime = new Date().getTime()
       axios.post(`https://maker.ifttt.com/trigger/${eventName}/with/key/${key}`, {
         value1: 'started',
